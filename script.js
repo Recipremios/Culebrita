@@ -14,6 +14,30 @@ let score = 0;
 let gameSpeed;
 let game;
 
+// Crear mensaje de fin de juego
+function showGameOverMessage() {
+    // Verificar si el mensaje ya existe
+    let message = document.getElementById("gameOverMessage");
+    if (!message) {
+        message = document.createElement("div");
+        message.id = "gameOverMessage";
+        document.body.appendChild(message);
+    }
+
+    message.innerHTML = `
+        <h2>¡Juego terminado!</h2>
+        <p>Puntuación: ${score}</p>
+        <button id="restartGame">Reiniciar</button>
+    `;
+    message.style.display = "block";
+
+    // Manejar el botón de reinicio
+    document.getElementById("restartGame").addEventListener("click", () => {
+        message.style.display = "none"; // Ocultar el mensaje
+        startGame(); // Reiniciar el juego
+    });
+}
+
 // Control del movimiento
 document.addEventListener("keydown", event => {
     if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
@@ -71,15 +95,15 @@ function draw() {
         snake.some(segment => segment.x === headX && segment.y === headY)
     ) {
         clearInterval(game);
-        alert(`¡Juego terminado! Puntuación: ${score}`);
+        showGameOverMessage();
         return;
     }
 
     snake.unshift(newHead); // Agregar la nueva cabeza
 }
 
-// Botón de inicio
-document.getElementById("startGame").addEventListener("click", () => {
+// Función para iniciar el juego
+function startGame() {
     // Configurar la velocidad del juego según la dificultad seleccionada
     const difficulty = document.getElementById("difficulty");
     gameSpeed = parseInt(difficulty.value);
@@ -99,4 +123,7 @@ document.getElementById("startGame").addEventListener("click", () => {
 
     // Iniciar el juego
     game = setInterval(draw, gameSpeed);
-});
+}
+
+// Botón de inicio
+document.getElementById("startGame").addEventListener("click", startGame);
