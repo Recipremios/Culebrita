@@ -38,6 +38,10 @@ function showGameOverMessage() {
     });
 }
 
+// Cargar la imagen de fondo
+const bgImage = new Image();
+bgImage.src = "background.png";
+
 // Control del movimiento
 document.addEventListener("keydown", event => {
     if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
@@ -48,10 +52,8 @@ document.addEventListener("keydown", event => {
 
 // Función para dibujar la culebra y la comida
 function draw() {
-    // Fondo
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpia el canvas
-    ctx.fillStyle = "lightgreen";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Dibujar el fondo con la imagen
+    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
 
     // Dibujar la comida
     ctx.fillStyle = "red";
