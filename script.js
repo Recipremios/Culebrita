@@ -11,6 +11,8 @@ let food = {
     y: Math.floor(Math.random() * canvasSize) * box,
 };
 let score = 0;
+let gameSpeed;
+let game;
 
 // Control del movimiento
 document.addEventListener("keydown", event => {
@@ -23,6 +25,7 @@ document.addEventListener("keydown", event => {
 // Función para dibujar la culebra y la comida
 function draw() {
     // Fondo
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpia el canvas
     ctx.fillStyle = "lightgreen";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -75,5 +78,25 @@ function draw() {
     snake.unshift(newHead); // Agregar la nueva cabeza
 }
 
-// Ejecutar el juego
-const game = setInterval(draw, 100);
+// Botón de inicio
+document.getElementById("startGame").addEventListener("click", () => {
+    // Configurar la velocidad del juego según la dificultad seleccionada
+    const difficulty = document.getElementById("difficulty");
+    gameSpeed = parseInt(difficulty.value);
+
+    // Detener el intervalo previo, si existe
+    if (game) {
+        clearInterval(game);
+    }
+
+    // Reiniciar el estado del juego
+    snake = [{ x: 10 * box, y: 10 * box }];
+    direction = "RIGHT";
+    score = 0;
+
+    // Limpiar el canvas antes de iniciar
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Iniciar el juego
+    game = setInterval(draw, gameSpeed);
+});
